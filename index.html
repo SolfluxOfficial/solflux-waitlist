@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solflux — Join the Waitlist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:   #00d4ff;
+      --accent:    #00ffb3;
+      --gold:      #ffc857;
+      --purple:    #7b5cff;
+      --bg:        #020e1a;
+      --bg2:       #071628;
+      --text:      #e2f0ff;
+      --muted:     #5a7a9a;
+      --border:    rgba(0,212,255,0.12);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS PARTICLES ── */
+    #particles { position:fixed; inset:0; z-index:0; pointer-events:none; }
+
+    /* ── BACKGROUND LAYERS ── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+    .bg-layer::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(0,60,160,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 70% at 85% 75%, rgba(0,90,200,0.20) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,20,60,0.40) 0%, transparent 65%);
+      animation: bgShift 18s ease-in-out infinite alternate;
+    }
+    .bg-layer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 30% 60% at 70% 20%, rgba(123,92,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 30% 80%, rgba(0,212,255,0.06) 0%, transparent 50%);
+      animation: bgShift2 25s ease-in-out infinite alternate;
+    }
+    @keyframes bgShift {
+      0%   { transform: scale(1) translate(0,0); }
+      50%  { transform: scale(1.05) translate(2%,3%); }
+      100% { transform: scale(0.98) translate(-2%,-2%); }
+    }
+    @keyframes bgShift2 {
+      0%   { transform: scale(1) translate(0,0) rotate(0deg); }
+      100% { transform: scale(1.08) translate(-3%,4%) rotate(2deg); }
+    }
+
+    /* Ink swirl effect */
+    .ink-swirl {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='800' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.006' numOctaves='5' seed='8'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    /* Grid lines */
+    .grid-lines {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── LAYOUT ── */
+    .page { position: relative; z-index: 1; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index: 100;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem;
+      background: rgba(2,14,26,0.75);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+.nav-logo {
+      display: flex; align-items: center; gap: 1px;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 60px; width: auto; object-fit: contain;
+    }
+.nav-logo-name {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #00d4ff;
+  text-transform: uppercase;
+}
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      padding: 9px 22px;
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      border-radius: 6px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; text-decoration: none;
+    }
+    .nav-cta:hover {
+      background: var(--primary); color: var(--bg);
+      box-shadow: 0 0 20px rgba(0,212,255,0.3);
+    }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 120px 2rem 4rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-inner { max-width: 800px; }
+
+    /* Live badge */
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 20px;
+      background: rgba(0,255,179,0.08);
+      border: 1px solid rgba(0,255,179,0.25);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem; color: var(--accent);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeSlideDown 0.8s ease both;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+      animation: livePulse 1.5s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%,100% { opacity:1; transform: scale(1); box-shadow: 0 0 0 0 rgba(0,255,179,0.4); }
+      50% { opacity:0.7; transform: scale(1.3); box-shadow: 0 0 0 6px rgba(0,255,179,0); }
+    }
+
+    /* Hero heading */
+    .hero-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -1px;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      animation: fadeSlideDown 0.8s 0.1s ease both;
+    }
+    .hero-title .line2 {
+      display: block;
+      background: linear-gradient(135deg, #00d4ff 0%, #7b5cff 50%, #00ffb3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: gradShift 4s ease infinite;
+    }
+    @keyframes gradShift {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: rgba(226,240,255,0.65);
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+      animation: fadeSlideDown 0.8s 0.2s ease both;
+    }
+
+    /* ── WAITLIST FORM ── */
+    .waitlist-form {
+      display: flex; gap: 0;
+      max-width: 500px; margin: 0 auto 2rem;
+      animation: fadeSlideDown 0.8s 0.3s ease both;
+      position: relative;
+    }
+    .waitlist-form input {
+      flex: 1;
+      padding: 16px 20px;
+      background: rgba(7,22,40,0.9);
+      border: 1.5px solid rgba(0,212,255,0.2);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .waitlist-form input:focus { border-color: var(--primary); }
+    .waitlist-form input::placeholder { color: var(--muted); }
+    .waitlist-form button {
+      padding: 16px 28px;
+      background: linear-gradient(135deg, #00d4ff, #0077ff);
+      border: none;
+      border-radius: 0 10px 10px 0;
+      color: #fff;
+      font-family: 'Exo 2', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .waitlist-form button:hover {
+      box-shadow: 0 0 30px rgba(0,119,255,0.5);
+      transform: translateY(-1px);
+    }
+    .waitlist-form button:active { transform: translateY(0); }
+
+    .form-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      animation: fadeSlideDown 0.8s 0.35s ease both;
+    }
+
+    /* Success state */
+    .waitlist-success {
+      display: none;
+      flex-direction: column; align-items: center; gap: 0.8rem;
+      max-width: 500px; margin: 0 auto 2rem;
+      padding: 1.5rem;
+      background: rgba(0,255,179,0.06);
+      border: 1px solid rgba(0,255,179,0.25);
+      border-radius: 12px;
+      animation: fadeSlideDown 0.5s ease both;
+    }
+    .waitlist-success .check { font-size: 2.5rem; }
+    .waitlist-success h3 {
+      font-family: 'Exo 2', sans-serif;
+      color: var(--accent); font-size: 1.2rem; font-weight: 800;
+    }
+    .waitlist-success p { color: var(--muted); font-size: 0.9rem; }
+    .waitlist-number {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.5rem; color: var(--primary);
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown-wrap {
+      display: flex; justify-content: center; gap: 1.5rem;
+      margin: 3rem 0;
+      animation: fadeSlideDown 0.8s 0.4s ease both;
+    }
+    .count-block {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(7,22,40,0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      min-width: 90px;
+    }
+    .count-block::before {
+      content: '';
+      position: absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+    .count-num {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.8rem; font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      min-width: 3ch; text-align: center;
+    }
+    .count-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; color: var(--muted);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .count-sep {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.5rem; font-weight: 900;
+      color: var(--primary);
+      opacity: 0.4;
+      align-self: center;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.4} 50%{opacity:0.1} }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex; justify-content: center; gap: 0;
+      max-width: 700px; margin: 0 auto 5rem;
+      background: rgba(7,22,40,0.7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      animation: fadeSlideDown 0.8s 0.5s ease both;
+    }
+    .stat-item {
+      flex: 1; padding: 1.4rem 1rem; text-align: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item::before {
+      content: '';
+      position: absolute; top:0; left:20%; right:20%; height:1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .stat-item:hover::before { opacity: 1; }
+    .stat-val {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.8rem; font-weight: 900; color: var(--primary);
+      display: block;
+    }
+    .stat-lbl {
+      font-size: 0.72rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 3px; display: block;
+    }
+
+    /* ── FEATURES SECTION ── */
+    .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem; color: var(--primary);
+      letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      padding: 4px 12px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 20px;
+    }
+    .section-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; color: #fff;
+      margin-bottom: 0.8rem; line-height: 1.1;
+    }
+    .section-title span { color: var(--primary); }
+    .section-sub { color: var(--muted); font-size: 1rem; max-width: 500px; line-height: 1.6; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .feat-card {
+      background: rgba(7,22,40,0.7);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .feat-card::before {
+      content: '';
+      position: absolute; top:0; left:0; right:0; height:2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .feat-card:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0,212,255,0.06);
+    }
+    .feat-card:hover::before { transform: scaleX(1); }
+    .feat-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: rgba(0,212,255,0.07);
+  border: 1px solid rgba(0,212,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+}
+
+.feat-icon img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(218, 243, 248, 0.35));
+}
+    .feat-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.05rem; font-weight: 800;
+      color: #fff; margin-bottom: 0.6rem;
+    }
+    .feat-desc { font-size: 0.88rem; color:rgba(225, 248, 253, 0.582); line-height: 1.6; }
+    .feat-badge {
+      display: inline-block; margin-top: 1rem;
+      padding: 3px 10px; border-radius: 20px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .badge-cyan  { background:rgba(0,212,255,0.1); color:var(--primary); border:1px solid rgba(0,212,255,0.2); }
+    .badge-green { background:rgba(0,255,179,0.1); color:var(--accent);  border:1px solid rgba(0,255,179,0.2); }
+    .badge-gold  { background:rgba(255,200,87,0.1); color:var(--gold);   border:1px solid rgba(255,200,87,0.2); }
+    .badge-purp  { background:rgba(123,92,255,0.1); color:var(--purple); border:1px solid rgba(123,92,255,0.2); }
+
+    /* ── ROADMAP ── */
+    .roadmap-wrap { margin-top: 3rem; position: relative; }
+    .roadmap-line {
+      position: absolute;
+      top: 28px; left: 28px; right: 28px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), var(--purple), var(--accent), transparent);
+      opacity: 0.3;
+    }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      position: relative; z-index: 1;
+    }
+    .phase {
+      background: rgba(7,22,40,0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .phase:hover {
+      border-color: rgba(0,212,255,0.3);
+      transform: translateY(-4px);
+    }
+    .phase.current {
+      border-color: var(--primary);
+      box-shadow: 0 0 30px rgba(0,212,255,0.1);
+    }
+    .phase-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem; color: var(--muted);
+      letter-spacing: 2px; margin-bottom: 0.5rem;
+    }
+    .phase-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid var(--muted);
+      margin: 0 auto 0.8rem;
+    }
+    .phase.current .phase-dot { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 12px var(--primary); }
+    .phase.done .phase-dot { background: var(--accent); border-color: var(--accent); }
+    .phase-name {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 0.82rem; font-weight: 800; color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .phase-items { font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
+    .phase-status {
+      display: inline-block; margin-top: 0.8rem;
+      padding: 2px 8px; border-radius: 10px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 1px;
+    }
+    .s-done    { background:rgba(0,255,179,0.1); color:var(--accent); border:1px solid rgba(0,255,179,0.2); }
+    .s-current { background:rgba(0,212,255,0.1); color:var(--primary); border:1px solid rgba(0,212,255,0.2); }
+    .s-soon    { background:rgba(106,138,170,0.08); color:var(--muted); border:1px solid rgba(106,138,170,0.15); }
+
+    /* ── NFT PREVIEW ── */
+    
+    /* ── SOCIAL / COMMUNITY ── */
+    .social-section {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+    .social-cards {
+      display: flex; justify-content: center; gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    .social-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 1rem 1.8rem;
+      background: rgba(7,22,40,0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+      min-width: 180px;
+    }
+    .social-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,212,255,0.08);
+    }
+    .social-icon { font-size: 1.6rem; }
+    .social-label { font-family: 'Exo 2', sans-serif; font-size: 0.9rem; font-weight: 700; }
+    .social-sub { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .bottom-cta::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(0,119,255,0.06), transparent 65%);
+      pointer-events: none;
+    }
+    .cta-box {
+      max-width: 680px; margin: 0 auto;
+      background: rgba(7,22,40,0.8);
+      border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 24px;
+      padding: 3.5rem;
+      position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute; top:0; left:10%; right:10%; height:1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+    .cta-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.2rem; font-weight: 900;
+      color: #fff; margin-bottom: 0.8rem;
+    }
+    .cta-title span { color: var(--primary); }
+    .cta-sub { color: var(--muted); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 1px;
+    }
+    .footer-logo img { height: 48px; width: auto; }
+    .footer-logo-name {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.1rem; font-weight: 900;
+      color: var(--primary); letter-spacing: 2px;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--primary); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ── TOAST ── */
+    .toast-wrap {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .toast {
+      padding: 12px 18px;
+      background: rgba(7,22,40,0.95);
+      border-radius: 10px;
+      font-size: 0.9rem; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+      animation: fadeSlideUp 0.3s ease;
+      min-width: 250px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .toast.success { border-left: 3px solid var(--accent); }
+    .toast.error   { border-left: 3px solid #ff4d6d; }
+    /* ── NAV TICKER ── */
+.nav-ticker-wrap {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 2rem;
+  mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.nav-ticker {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: tickerScroll 20s linear infinite;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(0, 212, 255, 0.6);
+  white-space: nowrap;
+}
+
+.nav-ticker:hover { animation-play-state: paused; }
+
+.ticker-dot {
+  color: rgba(0, 255, 179, 0.4);
+  font-size: 0.5rem;
+  align-self: center;
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── LOGO WATERMARK BACKGROUND ── */
+.logo-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+  width: 1500px;
+  height: 1500px;
+  opacity: 0.05;
+  filter: blur(1px) grayscale(30%);
+  background-image: url('images/logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  .marketplace-icon {
+  background: transparent !important;
+}
+
+.marketplace-icon img {
+  mix-blend-mode: lighten;
+  filter: brightness(1.3) contrast(1.2);
+}
+.social-svg svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  fill: #e2f0ff;
+  filter: drop-shadow(0 0 8px rgba(0,212,255,0.25));
+  .social-svg svg {
+  fill: #5865f2;
+}
+}  
+}
+.social-svg,
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-svg svg,
+.social-icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  fill: #f4fbff !important;
+  color: #f4fbff !important;
+  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
+}
+
+.social-svg svg path,
+.social-icon svg path {
+  fill: currentColor !important;
+}
+  </style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="bg-layer"></div>
+<div class="ink-swirl"></div>
+
+<div class="logo-watermark"></div>
+
+<div class="page">
+
+  <!-- NAVBAR -->
+<nav>
+  <a href="waitlist.html" class="nav-logo">
+    <img src="images/logo.png" alt="Solflux">
+    <span class="nav-logo-name">SOLFLUX</span>
+  </a>
+
+  <!-- Scrolling ticker -->
+  <div class="nav-ticker-wrap">
+    <div class="nav-ticker">
+      <span>Built to Transform</span>
+      <span class="ticker-dot">◆</span>
+      <span>NFTs That Earn</span>
+      <span class="ticker-dot">◆</span>
+      <span>Evolve & Grow</span>
+      <span class="ticker-dot">◆</span>
+      <span>Solana Powered</span>
+      <span class="ticker-dot">◆</span>
+      <span>Built to Transform</span>
+      <span class="ticker-dot">◆</span>
+      <span>NFTs That Earn</span>
+      <span class="ticker-dot">◆</span>
+      <span>Evolve & Grow</span>
+      <span class="ticker-dot">◆</span>
+      <span>Solana Powered</span>
+      <span class="ticker-dot">◆</span>
+    </div>
+  </div>
+
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+
+      <div class="live-badge">
+        <span class="live-dot"></span>
+        Early Access Open — Limited Spots
+      </div>
+
+      <h1 class="hero-title">
+        The Future of<br>
+        <span class="line2">NFT Finance</span><br>
+        is Here
+      </h1>
+
+      <p class="hero-sub">
+        Solflux transforms NFTs into yield-generating, evolving digital assets.
+        Join the waitlist to get early access, exclusive rewards, and a head start
+        on the most utility-rich NFT ecosystem on Solana.
+      </p>
+
+      <!-- WAITLIST FORM -->
+      <div id="waitlistFormWrap">
+        <div class="waitlist-form" id="waitlistForm">
+          <input type="email" id="emailInput" placeholder="Enter your email address..." autocomplete="email">
+          <button onclick="joinWaitlist()">Join Now</button>
+        </div>
+        <p class="form-note">No spam. Unsubscribe anytime. Early members get exclusive NFT drops.</p>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="waitlist-success" id="successMsg">
+        <div class="check">🎉</div>
+        <h3>You're on the Waitlist!</h3>
+        <div class="waitlist-number" id="waitlistNum">#4,821</div>
+        <p>We'll notify you when early access opens. Share to move up the list!</p>
+        <div style="display:flex; gap:0.8rem; margin-top:0.5rem; flex-wrap:wrap; justify-content:center;">
+          <a href="https://x.com/solfluxofficial" target="_blank" class="nav-cta" style="font-size:0.82rem; padding:8px 18px;">Share on Twitter</a>
+          <a href="https://discord.gg/QTEzV5jRW2" target="_blank" class="nav-cta" style="font-size:0.82rem; padding:8px 18px; border-color:var(--purple); color:var(--purple);">Join Discord</a>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN -->
+      <div class="countdown-wrap">
+        <div class="count-block">
+          <span class="count-num" id="cdDays">00</span>
+          <span class="count-label">Days</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="count-block">
+          <span class="count-num" id="cdHours">00</span>
+          <span class="count-label">Hours</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="count-block">
+          <span class="count-num" id="cdMins">00</span>
+          <span class="count-label">Mins</span>
+        </div>
+        <span class="count-sep">:</span>
+        <div class="count-block">
+          <span class="count-num" id="cdSecs">00</span>
+          <span class="count-label">Secs</span>
+        </div>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin-top:-2rem; margin-bottom:2rem; font-family:'Share Tech Mono',monospace; letter-spacing:1px;">UNTIL EARLY ACCESS LAUNCH</p>
+
+      <!-- STATS -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-val" id="statWaitlist">500+</span>
+          <span class="stat-lbl">On Waitlist</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">TBA</span>
+          <span class="stat-lbl">Floor Price (SOL)</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">TBA</span>
+          <span class="stat-lbl">Max APY</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">COMING SOON!</span>
+          <span class="stat-lbl">NFTs Planned</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="section reveal" id="features">
+    <div style="text-align:center; margin-bottom:0.5rem;">
+      <span class="section-tag">Why Solflux</span>
+    </div>
+    <h2 class="section-title" style="text-align:center;">
+      Built Different.<br><span>Built to Transform.</span>
+    </h2>
+    <p class="section-sub" style="text-align:center; margin:0 auto 0.5rem;">
+      Traditional NFTs are just collectibles. Solflux NFTs are financial instruments.
+    </p>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon">
+  <img src="images/icon-yield.png" alt="Yield">
+</div>
+        <div class="feat-title">Passive Yield Generation</div>
+        <div class="feat-desc">Stake your NFTs to earn daily yield. Higher stage NFTs unlock higher APY rates — up to 45% on Ascended NFTs.</div>
+        <span class="feat-badge badge-green">Up to TBA APY</span>
+      </div>
+      <div class="feat-card reveal">
+       <div class="feat-icon">
+  <img src="images/icon-identity.png" alt="Digital Identity">
+</div> 
+        <div class="feat-title">Living Digital Identity</div>
+        <div class="feat-desc">Your NFT evolves through 3 stages based on staking activity, XP earned, and ecosystem participation. NFTs that grow with you.</div>
+        <span class="feat-badge badge-purp">3 Evolution Stages</span>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">
+  <img src="images/icon-marketplace.png" alt="Marketplace">
+</div>
+        <div class="feat-title">On-Chain Marketplace</div>
+        <div class="feat-desc">Buy, sell, and trade with transparent on-chain royalties. Creators earn on every secondary sale through smart contracts.</div>
+        <span class="feat-badge badge-cyan">Coming Phase 2</span>
+      </div>
+      <div class="feat-card reveal">
+       <div class="feat-icon">
+  <img src="images/icon-governance.png" alt="Governance">
+</div>
+        <div class="feat-title">DAO Governance</div>
+        <div class="feat-desc">NFT and Solflux Holders vote on platform upgrades, reward parameters, and treasury decisions. Community owns the ecosystem.</div>
+        <span class="feat-badge badge-gold">Phase 4</span>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon">
+  <img src="images/icon-security.png" alt="Security">
+</div>
+        <div class="feat-title">Audited & Secure</div>
+        <div class="feat-desc">Multi-signature treasury, planned independent smart contract audits, and fully verifiable on-chain data.</div>
+        <span class="feat-badge badge-cyan">Audit Planned</span>
+      </div>
+      <div class="feat-card reveal">
+       <div class="feat-icon">
+  <img src="images/icon-speed.png" alt="Solana Speed">
+</div> 
+        <div class="feat-title">Solana Speed</div>
+        <div class="feat-desc">Built on Solana for sub-second transactions and negligible fees. No more waiting, no more gas wars.</div>
+        <span class="feat-badge badge-green">65,000 TPS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── NFT PREVIEW ── -->
+ 
+  <!-- ── ROADMAP ── -->
+  <section class="section reveal">
+    <span class="section-tag">Roadmap</span>
+    <h2 class="section-title">Our <span>Journey</span></h2>
+    <div class="roadmap-wrap">
+      <div class="roadmap-line"></div>
+      <div class="roadmap-grid">
+        <div class="phase done">
+          <div class="phase-num">PHASE 01</div>
+          <div class="phase-dot"></div>
+          <div class="phase-name">Foundation</div>
+          <div class="phase-items">Whitepaper · Brand Kit · Smart Contracts · Community</div>
+          <span class="phase-status s-done">Completed</span>
+        </div>
+        <div class="phase current">
+          <div class="phase-num">PHASE 02</div>
+          <div class="phase-dot"></div>
+          <div class="phase-name">Launch</div>
+          <div class="phase-items">NFT Mint · Marketplace · Waitlist · Early Access</div>
+          <span class="phase-status s-current">In Progress</span>
+        </div>
+        <div class="phase">
+          <div class="phase-num">PHASE 03</div>
+          <div class="phase-dot"></div>
+          <div class="phase-name">Staking</div>
+          <div class="phase-items">Rewards · Yield System · Holder Dashboard</div>
+          <span class="phase-status s-soon">Q3 2026</span>
+        </div>
+        <div class="phase">
+          <div class="phase-num">PHASE 04</div>
+          <div class="phase-dot"></div>
+          <div class="phase-name">Evolution</div>
+          <div class="phase-items">NFT Evolution · XP System · DAO Governance</div>
+          <span class="phase-status s-soon">Q4 2026</span>
+        </div>
+        <div class="phase">
+          <div class="phase-num">PHASE 05</div>
+          <div class="phase-dot"></div>
+          <div class="phase-name">Expansion</div>
+          <div class="phase-items">DeFi Integrations · Partnerships · Cross-chain</div>
+          <span class="phase-status s-soon">2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SOCIAL ── -->
+  <section class="social-section reveal">
+    <span class="section-tag">Community</span>
+    <h2 class="section-title" style="margin-top:0.5rem;">Join the <span>Movement</span></h2>
+    <p style="color:var(--muted); max-width:450px; margin:0 auto; font-size:1rem; line-height:1.6;">
+      Connect with thousands of early adopters building the future of NFT finance.
+    </p>
+    <div class="social-cards">
+      <a href="https://x.com/solfluxofficial" target="_blank" class="social-card">
+        <span class="social-icon">𝕏</span>
+        <div>
+          <div class="social-label">Twitter / X</div>
+          <div class="social-sub">@solfluxofficial</div>
+        </div>
+      </a>
+      <a href="https://discord.gg/QTEzV5jRW2" target="_blank" class="social-card">
+        <span class="social-icon social-svg">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20.3 4.4A16.2 16.2 0 0 0 16.3 3l-.2.4c1.4.4 2.1 1 2.1 1a13.1 13.1 0 0 0-12.4 0s.7-.6 2.2-1L7.7 3a16.2 16.2 0 0 0-4 1.4C1.2 8.2.5 11.9.8 15.5A16.5 16.5 0 0 0 5.8 18l.6-.9a10.3 10.3 0 0 1-1.6-.8l.4-.3c3.1 1.4 6.4 1.4 9.5 0l.4.3c-.5.3-1 .6-1.6.8l.6.9a16.5 16.5 0 0 0 5-2.5c.4-4.2-.7-7.8-2.8-11.1ZM8.4 13.9c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm7.2 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"/>
+  </svg>
+</span>
+        <div>
+          <div class="social-label">Discord</div>
+          <div class="social-sub">Join the server</div>
+        </div>
+      </a>
+      <a href="https://github.com/SolfluxOfficial" target="_blank" class="social-card">
+        <span class="social-icon"></span>
+        <div>
+        <span class="social-icon social-svg">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 .8a11.2 11.2 0 0 0-3.5 21.8c.6.1.8-.2.8-.6v-2.1c-3.2.7-3.9-1.4-3.9-1.4-.5-1.2-1.2-1.5-1.2-1.5-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1.5 2.6 3.3 1.8.1-.7.4-1.2.7-1.5-2.6-.3-5.3-1.3-5.3-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.5.1-3 0 0 .9-.3 3.1 1.1a10.6 10.6 0 0 1 5.6 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.7.1 3 .7.8 1.1 1.8 1.1 3 0 4.3-2.7 5.2-5.3 5.5.4.4.8 1 .8 2.1V22c0 .4.2.7.8.6A11.2 11.2 0 0 0 12 .8Z"/>
+  </svg>
+</span>  
+          <div class="social-sub">Open source GitHub</div>
+        </div>
+      </a>
+      <a href="https://docs.google.com/document/d/1F9JZZezWm4jFVbJapU__dehpmEhQAFivmz5I3y9f4rg" target="_blank" class="social-card">
+        <span class="social-icon">📄</span>
+        <div>
+          <div class="social-label">Whitepaper</div>
+          <div class="social-sub">Read the docs</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM CTA ── -->
+  <section class="bottom-cta reveal" id="waitlist">
+    <div class="cta-box">
+      <span class="section-tag" style="margin-bottom:1rem; display:inline-block;">Limited Spots</span>
+      <div class="cta-title">Don't Miss <span>Early Access</span></div>
+      <div class="cta-sub">
+        First 500 waitlist members get exclusive Genesis NFT airdrop,<br>
+        2x staking boost for 30 days, and DAO founding member status.
+      </div>
+      <div class="waitlist-form" style="max-width:460px; margin:0 auto 1rem;" id="waitlistForm2">
+        <input type="email" id="emailInput2" placeholder="Your email address..." autocomplete="email">
+        <button onclick="joinWaitlist2()">Reserve Spot</button>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted);">
+        <span style="color:var(--accent);">500+</span> people already on the waitlist
+      </p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-logo">
+      <img src="images/logo.png" alt="Solflux">
+      <span class="footer-logo-name">SOLFLUX</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://x.com/solfluxofficial" target="_blank">Twitter</a>
+      <a href="https://discord.gg/QTEzV5jRW2" target="_blank">Discord</a>
+      <a href="https://github.com/SolfluxOfficial" target="_blank">GitHub</a>
+      <a href="https://docs.google.com/document/d/1F9JZZezWm4jFVbJapU__dehpmEhQAFivmz5I3y9f4rg" target="_blank">Docs</a>
+      <a href="mailto:solflux.7@gmail.com">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 SOLFLUX All rights reserved</div>
+  </footer>
+
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+// ── PARTICLES ──────────────────────────────────────────────
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+const cursor = {
+  x: 0,
+  y: 0,
+  active: false,
+  power: 0
+};
+
+window.addEventListener('pointermove', (e) => {
+  cursor.x = e.clientX;
+  cursor.y = e.clientY;
+  cursor.active = true;
+  cursor.power = 1;
+});
+
+window.addEventListener('pointerdown', (e) => {
+  cursor.x = e.clientX;
+  cursor.y = e.clientY;
+  cursor.active = true;
+  cursor.power = 2.2;
+});
+
+window.addEventListener('pointerup', () => {
+  cursor.power = 0.8;
+});
+
+window.addEventListener('pointerleave', () => {
+  cursor.active = false;
+});
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+this.baseVx = (Math.random() - 0.5) * 0.35;
+this.baseVy = (Math.random() - 0.5) * 0.35 - 0.12;
+this.pushVx = 0;
+this.pushVy = 0;
+this.wave = Math.random() * Math.PI * 2;
+    this.r  = Math.random() * 1.5 + 0.3;
+    this.a  = Math.random() * 0.5 + 0.1;
+    this.c  = Math.random() > 0.6 ? '#00d4ff' : Math.random() > 0.5 ? '#7b5cff' : '#00ffb3';
+  }
+update() {
+  let speedBoost = 1;
+
+  const autoWaveX = Math.sin(Date.now() * 0.001 + this.wave) * 0.08;
+  const autoWaveY = Math.cos(Date.now() * 0.0012 + this.wave) * 0.06;
+
+  if (cursor.active) {
+    const dx = this.x - cursor.x;
+    const dy = this.y - cursor.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const radius = 170;
+
+    if (dist < radius) {
+      const force = (1 - dist / radius) * Math.max(cursor.power, 0.4);
+      const angle = Math.atan2(dy, dx);
+
+      this.pushVx += Math.cos(angle) * force * 0.12;
+      this.pushVy += Math.sin(angle) * force * 0.12;
+
+      this.pushVx += -Math.sin(angle) * force * 0.05;
+      this.pushVy += Math.cos(angle) * force * 0.05;
+
+      speedBoost = 1 + force * 2.8;
+      this.a = Math.min(0.95, this.a + force * 0.04);
+    }
+  }
+
+  this.x += (this.baseVx + autoWaveX + this.pushVx) * speedBoost;
+  this.y += (this.baseVy + autoWaveY + this.pushVy) * speedBoost;
+
+  this.pushVx *= 0.92;
+  this.pushVy *= 0.92;
+
+  if (this.y < -10 || this.x < -10 || this.x > W + 10 || this.y > H + 10) {
+    this.reset();
+  }
+}
+
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.a;
+    ctx.fillStyle   = this.c;
+    ctx.shadowBlur  = 6;
+    ctx.shadowColor = this.c;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function animateParticles() {
+  ctx.clearRect(0, 0, W, H);
+
+  if (cursor.active) {
+    ctx.save();
+    const glow = ctx.createRadialGradient(cursor.x, cursor.y, 0, cursor.x, cursor.y, 160);
+    glow.addColorStop(0, 'rgba(0,212,255,0.16)');
+    glow.addColorStop(0.45, 'rgba(0,255,179,0.07)');
+    glow.addColorStop(1, 'rgba(0,212,255,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(cursor.x, cursor.y, 160, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  cursor.power *= 0.96;
+
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+// ── COUNTDOWN ──────────────────────────────────────────────
+// Launch date: 20 days from now
+const launchDate = new Date('2026-06-15T00:00:00+05:30');
+
+function updateCountdown() {
+  const diff = launchDate - Date.now();
+
+  if (diff <= 0) {
+    document.getElementById('cdDays').textContent = '00';
+    document.getElementById('cdHours').textContent = '00';
+    document.getElementById('cdMins').textContent = '00';
+    document.getElementById('cdSecs').textContent = '00';
+
+    const label = document.querySelector('.countdown-wrap + p');
+    if (label) {
+      label.textContent = 'WHITELIST ENDED - STAY TUNED';
+      label.style.color = 'var(--accent)';
+      label.style.fontWeight = '700';
+      label.style.letterSpacing = '2px';
+    }
+
+    document.querySelectorAll('.waitlist-form button').forEach(btn => {
+      btn.textContent = 'Whitelist Ended';
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      btn.style.cursor = 'not-allowed';
+    });
+
+    return;
+  }
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('cdDays').textContent = String(d).padStart(2, '0');
+  document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
+  document.getElementById('cdMins').textContent = String(m).padStart(2, '0');
+  document.getElementById('cdSecs').textContent = String(s).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// ── WAITLIST COUNTER (animated) ────────────────────────────
+let waitlistCount = parseInt(localStorage.getItem('sfx_waitlist_count') || '500');
+// ── TOAST ──────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = msg;
+  wrap.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.4s'; setTimeout(()=>t.remove(),400); }, 4000);
+}
+
+// ── WAITLIST FORM ──────────────────────────────────────────
+function isValidEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdokdqe';
+
+async function submitWaitlist(email, source = 'hero') {
+  if (!isValidEmail(email)) {
+    showToast('⚠️ Please enter a valid email address.', 'error');
+    return false;
+  }
+
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        project: 'Solflux',
+        source: source,
+        page: window.location.href,
+        joined_at: new Date().toISOString()
+      })
+    });
+
+    if (!res.ok) {
+      showToast('⚠️ Something went wrong. Please try again.', 'error');
+      return false;
+    }
+
+    waitlistCount++;
+    localStorage.setItem('sfx_waitlist_count', waitlistCount);
+    return true;
+  } catch (err) {
+    showToast('⚠️ Network error. Please try again.', 'error');
+    return false;
+  }
+}
+
+async function joinWaitlist() {
+  const email = document.getElementById('emailInput').value.trim();
+  if (!(await submitWaitlist(email, 'hero'))) return;
+
+  // Show success
+  document.getElementById('waitlistForm').style.display = 'none';
+  document.querySelector('.form-note').style.display = 'none';
+  const success = document.getElementById('successMsg');
+  success.style.display = 'flex';
+  document.getElementById('waitlistNum').textContent = '#' + waitlistCount.toLocaleString();
+
+  // Update stat
+  document.getElementById('statWaitlist').textContent = waitlistCount.toLocaleString() + '+';
+}
+
+async function joinWaitlist2() {
+  const email = document.getElementById('emailInput2').value.trim();
+  if (!(await submitWaitlist(email, 'bottom_cta'))) return;
+
+  document.getElementById('waitlistForm2').innerHTML = `
+    <div style="width:100%; text-align:center; padding:1rem;">
+      <div style="font-size:2rem; margin-bottom:0.5rem;">🎉</div>
+      <div style="font-family:'Exo 2',sans-serif; font-weight:800; color:var(--accent); font-size:1.1rem;">You're in! Position #${waitlistCount.toLocaleString()}</div>
+      <div style="color:var(--muted); font-size:0.85rem; margin-top:0.4rem;">Check your inbox for confirmation.</div>
+    </div>
+  `;
+  showToast('🎉 Welcome to Solflux! You\'re on the waitlist.', 'success');
+}
+
+// ── SCROLL REVEAL ─────────────────────────────────────────
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Stagger children
+      e.target.querySelectorAll('.feat-card, .phase, .social-card').forEach((el, i) => {
+        el.style.transitionDelay = (i * 0.08) + 's';
+        el.classList.add('visible');
+      });
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(r => observer.observe(r));
+
+</script>
+</body>
+</html>
