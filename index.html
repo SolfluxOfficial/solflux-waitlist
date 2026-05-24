@@ -720,6 +720,171 @@
 .social-icon svg path {
   fill: currentColor !important;
 }
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  nav {
+    height: 64px;
+    padding: 0 14px;
+    gap: 10px;
+  }
+
+  .nav-logo img {
+    height: 42px;
+  }
+
+  .nav-logo-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.8px;
+  }
+
+  .nav-ticker-wrap {
+    display: none;
+  }
+
+  .nav-cta {
+    padding: 7px 12px;
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 96px 16px 48px;
+    align-items: flex-start;
+  }
+
+  .hero-inner {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: clamp(2.3rem, 12vw, 3.2rem);
+    line-height: 1.06;
+    letter-spacing: 0;
+  }
+
+  .hero-sub {
+    max-width: 340px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .waitlist-form {
+    width: 100%;
+    max-width: 340px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .waitlist-form input,
+  .waitlist-form button {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .waitlist-form input {
+    border: 1.5px solid rgba(0,212,255,0.2);
+  }
+
+  .countdown-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    max-width: 340px;
+    margin: 2rem auto 1rem;
+  }
+
+  .count-sep {
+    display: none;
+  }
+
+  .count-block {
+    min-width: 0;
+    padding: 1rem 0.7rem;
+  }
+
+  .stats-bar {
+    flex-direction: column;
+    max-width: 340px;
+    margin-bottom: 3rem;
+  }
+
+  .stat-item {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .feat-card {
+    padding: 1.35rem;
+  }
+
+  .roadmap-line {
+    display: none;
+  }
+
+  .roadmap-wrap {
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+
+  .roadmap-grid {
+    display: flex;
+    gap: 12px;
+    min-width: max-content;
+  }
+
+  .phase {
+    min-width: 180px;
+  }
+
+  .social-cards {
+    flex-direction: column;
+    max-width: 320px;
+    margin: 2rem auto 0;
+  }
+
+  .social-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .section,
+  .social-section,
+  .bottom-cta {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .cta-box {
+    padding: 2rem 1.2rem;
+  }
+
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem 16px;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo-watermark {
+    width: 720px;
+    height: 720px;
+  }
+}
   </style>
 </head>
 <body>
