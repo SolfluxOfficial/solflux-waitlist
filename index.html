@@ -1445,8 +1445,14 @@ async function submitWaitlist(email, source = 'hero') {
     }
 
     waitlistCount++;
-    localStorage.setItem('sfx_waitlist_count', waitlistCount);
-    return true;
+localStorage.setItem('sfx_waitlist_count', waitlistCount);
+
+savedEmails.push(normalizedEmail);
+localStorage.setItem('sfx_emails', JSON.stringify(savedEmails));
+
+updateWaitlistCountUI();
+
+return true;
   } catch (err) {
     showToast('⚠️ Network error. Please try again.', 'error');
     return false;
