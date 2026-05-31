@@ -1190,7 +1190,7 @@
         <button onclick="joinWaitlist2()">Reserve Spot</button>
       </div>
       <p style="font-size:0.75rem; color:var(--muted);">
-        <span style="color:var(--accent);">500+</span> people already on the waitlist
+        <span id="bottomWaitlistCount" style="color:var(--accent);">500+</span> people already on the waitlist
       </p>
     </div>
   </section>
@@ -1400,6 +1400,15 @@ setInterval(updateCountdown, 1000);
 
 // ── WAITLIST COUNTER (animated) ────────────────────────────
 let waitlistCount = parseInt(localStorage.getItem('sfx_waitlist_count') || '500');
+function updateWaitlistCountUI() {
+  const topStat = document.getElementById('statWaitlist');
+  const bottomStat = document.getElementById('bottomWaitlistCount');
+
+  if (topStat) topStat.textContent = waitlistCount.toLocaleString() + '+';
+  if (bottomStat) bottomStat.textContent = waitlistCount.toLocaleString() + '+';
+}
+
+updateWaitlistCountUI();
 // ── TOAST ──────────────────────────────────────────────────
 function showToast(msg, type = 'success') {
   const wrap = document.getElementById('toastWrap');
@@ -1418,8 +1427,17 @@ function isValidEmail(e) {
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mzdokdqe';
 
 async function submitWaitlist(email, source = 'hero') {
-  if (!isValidEmail(email)) {
-    showToast('⚠️ Please enter a valid email address.', 'error');
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (!isValidEmail(normalizedEmail)) {
+    showToast('Please enter a valid email address.', 'error');
+    return false;
+  }
+
+  const savedEmails = JSON.parse(localStorage.getItem('sfx_emails') || '[]');
+
+  if (savedEmails.includes(normalizedEmail)) {
+    showToast("You're already on the waitlist! Stay tuned.", 'error');
     return false;
   }
 
@@ -1431,7 +1449,7 @@ async function submitWaitlist(email, source = 'hero') {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: email,
+        email: normalizedEmail,
         project: 'Solflux',
         source: source,
         page: window.location.href,
@@ -1440,21 +1458,21 @@ async function submitWaitlist(email, source = 'hero') {
     });
 
     if (!res.ok) {
-      showToast('⚠️ Something went wrong. Please try again.', 'error');
+      showToast('Something went wrong. Please try again.', 'error');
       return false;
     }
 
     waitlistCount++;
-localStorage.setItem('sfx_waitlist_count', waitlistCount);
+    localStorage.setItem('sfx_waitlist_count', waitlistCount);
 
-savedEmails.push(normalizedEmail);
-localStorage.setItem('sfx_emails', JSON.stringify(savedEmails));
+    savedEmails.push(normalizedEmail);
+    localStorage.setItem('sfx_emails', JSON.stringify(savedEmails));
 
-updateWaitlistCountUI();
+    updateWaitlistCountUI();
 
-return true;
+    return true;
   } catch (err) {
-    showToast('⚠️ You are already in waitlist Stay Tuned please', 'error');
+    showToast('Network error. Please try again.', 'error');
     return false;
   }
 }
